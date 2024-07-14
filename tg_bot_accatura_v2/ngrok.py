@@ -26,5 +26,6 @@ if __name__ == '__main__':
     first_command = [ngrok_path, "config", "add-authtoken", token]
     subprocess.run(first_command, text=True)
     second_command = [ngrok_path, "tunnel", "--label", "edge=edghts_2jEhsJzYR90vxy60HxeNgSo71I9", "http://localhost:8080"]
-    subprocess.run(second_command, text=True)
     print("ngrok: start")
+    subprocess.run(second_command, text=True)
+
