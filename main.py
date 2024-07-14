@@ -35,24 +35,26 @@ def run_scripts():
 
 if __name__ == '__main__':
     logger = logging.getLogger(__name__)
-    print('*** Добро пожаловать ***')
+    print('*** добро пожаловать ***')
     # run_scripts()
     try:
         processes = run_scripts()
         while True:
             for file_name, process in processes:
                 retcode = process.poll()
-                if retcode is not None:  # Process has finished
-                    logger.warning(f"Script {file_name} finished with return code {retcode}")
+                if retcode is not None:  # если что-то пошло не так
+                    logger.warning(f"скрипт {file_name} завершился с кодом: {retcode}")
                     processes.remove((file_name, process))
                 else:
-                    # Log the output from the process (optional)
+                    # как то настроить логи
                     stdout, stderr = process.communicate()
                     if stdout:
                         logger.info(f"Output from {file_name}: {stdout}")
+                        print(f"{file_name}: {stdout}")
                     if stderr:
                         logger.error(f"Error from {file_name}: {stderr}")
-            time.sleep(5)  # Check the processes every 5 seconds
+                        print(f"{file_name}: {stderr}")
+            time.sleep(5)  # Повторная проверка
     except KeyboardInterrupt:
-        logger.warning("Execution interrupted by the user.")
-        print("\nExecution interrupted by the user.")
+        logger.warning("завершение работы пользователем")
+        print("\nзавершение работы пользователем")
