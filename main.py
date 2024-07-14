@@ -28,7 +28,7 @@ def run_scripts():
             script_path = os.path.join(os.path.dirname(__file__), folder, file_name)
             venv_python = os.path.join(os.path.dirname(__file__), '.venv', 'Scripts', 'python.exe')
             if not os.path.exists(venv_python):
-                venv_python = 'python'
+                venv_python = 'python.exe'
             #subprocess.run([venv_python, script_path])
             process = subprocess.Popen([venv_python, script_path], stdout=None, stderr=None, text=True)
             processes.append((file_name, process))
