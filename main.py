@@ -58,5 +58,5 @@ if __name__ == '__main__':
             logger.info(f"Процесс {file_name} был завершен")
     finally:
         # Блок finally будет выполнен в любом случае,
-        # даже если произошло исключение (например, KeyboardInterrupt)
+        # даже если произошло KeyboardInterrupt)
         print("конец")
