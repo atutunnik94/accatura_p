@@ -11,7 +11,7 @@ from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, filte
 # Функци для загрузки токена из файла accatura_bot.token
 # примерный формат токена: ######:???????????????-????, без добавления "bot" к токену в конце или начале токена.
 def load_token():
-    token_file = os.path.join(os.path.dirname(__file__), '..', 'conf_load_info', 'accatura_bot.token')
+    token_file = os.path.join(os.path.dirname(__file__), '..', 'tg_bot_accatura_v2', 'accatura_bot.token')
     try:
         with open(token_file, 'r') as file:
             return file.read()

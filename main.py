@@ -13,7 +13,8 @@ logging.basicConfig(level=logging.DEBUG,
 loads_script = {
     "tg_bot_accatura_v2": [
         "tg_bot_accatura_v2.py",
-        "tg_web3app.py"
+        "tg_web3app.py",
+        "ngrok.py"
     ],
 
     # Далее можно добавлять любые проекты
@@ -35,7 +36,6 @@ def run_scripts():
     return processes
 
 if __name__ == '__main__':
-    chunk_size = 1024
     logger = logging.getLogger(__name__)
     print('*** добро пожаловать ***')
     # run_scripts()
