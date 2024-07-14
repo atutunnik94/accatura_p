@@ -3,6 +3,7 @@ import logging
 import subprocess
 import os
 import time
+import select
 
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -27,13 +28,14 @@ def run_scripts():
             venv_python = os.path.join(os.path.dirname(__file__), '.venv', 'Scripts', 'python.exe')
             print(file_name)
             #subprocess.run([venv_python, script_path])
-            process = subprocess.Popen([venv_python, script_path], stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                                       text=True)
+            process = subprocess.Popen([venv_python, script_path], stdout=None, stderr=None, text=True)
             processes.append((file_name, process))
+
 
     return processes
 
 if __name__ == '__main__':
+    chunk_size = 1024
     logger = logging.getLogger(__name__)
     print('*** добро пожаловать ***')
     # run_scripts()
@@ -44,17 +46,17 @@ if __name__ == '__main__':
                 retcode = process.poll()
                 if retcode is not None:  # если что-то пошло не так
                     logger.warning(f"скрипт {file_name} завершился с кодом: {retcode}")
+                    print(f"скрипт {file_name} завершился с кодом: {retcode}")
                     processes.remove((file_name, process))
-                else:
-                    # как то настроить логи
-                    stdout, stderr = process.communicate()
-                    if stdout:
-                        logger.info(f"Output from {file_name}: {stdout}")
-                        print(f"{file_name}: {stdout}")
-                    if stderr:
-                        logger.error(f"Error from {file_name}: {stderr}")
-                        print(f"{file_name}: {stderr}")
+                #print(process.communicate())
             time.sleep(5)  # Повторная проверка
     except KeyboardInterrupt:
         logger.warning("завершение работы пользователем")
         print("\nзавершение работы пользователем")
+        for file_name, process in processes:
+            process.terminate()  # Прерывание процесса
+            logger.info(f"Процесс {file_name} был завершен")
+    finally:
+        # Блок finally будет выполнен в любом случае,
+        # даже если произошло исключение (например, KeyboardInterrupt)
+        print("конец")
