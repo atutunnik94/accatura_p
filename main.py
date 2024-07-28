@@ -1,13 +1,7 @@
 # main.py
-import logging
 import subprocess
 import os
 import time
-
-logging.basicConfig(level=logging.DEBUG,
-                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    filename='app.log',  # Логи будут записываться в файл app.log
-                    filemode='w')
 
 loads_script = {
     "tg_bot_accatura_v2": [
@@ -28,7 +22,6 @@ def run_scripts():
             venv_python = os.path.join(os.path.dirname(__file__), '.venv', 'Scripts', 'python.exe')
             if not os.path.exists(venv_python):
                 venv_python = 'python.exe'
-            #subprocess.run([venv_python, script_path])
             process = subprocess.Popen([venv_python, script_path], stdout=None, stderr=None, text=True)
             processes.append((file_name, process))
 
@@ -36,26 +29,25 @@ def run_scripts():
     return processes
 
 if __name__ == '__main__':
-    logger = logging.getLogger(__name__)
-    print('*** добро пожаловать ***')
-    # run_scripts()
+
+    # добавление изначально 15 пустых строк в консоли.
+    for i in range(15):
+        print(i)
     try:
         processes = run_scripts()
         while True:
             for file_name, process in processes:
                 retcode = process.poll()
                 if retcode is not None:  # если что-то пошло не так
-                    logger.warning(f"скрипт {file_name} завершился с кодом: {retcode}")
                     print(f"скрипт {file_name} завершился с кодом: {retcode}")
                     processes.remove((file_name, process))
-                #print(process.communicate())
             time.sleep(5)  # Повторная проверка
+    except Exception as e:
+        print(f"завершение работы: {e}")
     except KeyboardInterrupt:
-        logger.warning("завершение работы пользователем")
         print("\nзавершение работы пользователем")
         for file_name, process in processes:
             process.terminate()  # Прерывание процесса
-            logger.info(f"Процесс {file_name} был завершен")
     finally:
         # Блок finally будет выполнен в любом случае,
         # даже если произошло KeyboardInterrupt)
